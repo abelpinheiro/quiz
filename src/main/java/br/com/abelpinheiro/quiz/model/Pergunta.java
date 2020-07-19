@@ -1,7 +1,14 @@
 package br.com.abelpinheiro.quiz.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Pergunta {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String tipoQuiz;
@@ -19,19 +26,6 @@ public class Pergunta {
 	private String opcao4;
 
 	private String resposta;
-	
-	public Pergunta(String tipoQuizz, String pergunta, String tipoResposta, String opcao1, String opcao2, String opcao3,
-			String opcao4, String resposta) {
-		super();
-		this.tipoQuiz = tipoQuizz;
-		this.pergunta = pergunta;
-		this.tipoResposta = tipoResposta;
-		this.opcao1 = opcao1;
-		this.opcao2 = opcao2;
-		this.opcao3 = opcao3;
-		this.opcao4 = opcao4;
-		this.resposta = resposta;
-	}
 
 	public Long getId() {
 		return id;
