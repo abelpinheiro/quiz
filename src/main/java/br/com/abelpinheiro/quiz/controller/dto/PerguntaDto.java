@@ -7,7 +7,6 @@ import br.com.abelpinheiro.quiz.model.Pergunta;
 
 public class PerguntaDto {
 
-	private Long id;
 	private String tipoQuiz;
 	private String pergunta;
 	private String tipoResposta;
@@ -18,7 +17,6 @@ public class PerguntaDto {
 	private String resposta;
 
 	public PerguntaDto(Pergunta pergunta) {
-		this.id = pergunta.getId();
 		this.tipoQuiz = pergunta.getTipoQuiz();
 		this.pergunta = pergunta.getPergunta();
 		this.tipoResposta = pergunta.getTipoResposta();

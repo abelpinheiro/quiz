@@ -4,27 +4,46 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Pergunta {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
+	@Size(min = 3, max = 25)
 	private String tipoQuiz;
 
+	@NotNull
+	@Size(min = 10, max = 200)
 	private String pergunta;
 
+	@NotNull
+	@Size(min = 3, max = 20)
 	private String tipoResposta;
 
+	@NotNull
+	@Size(min = 3, max = 30)
 	private String opcao1;
-	
+
+	@NotNull
+	@Size(max = 30)
 	private String opcao2;
 
+	@NotNull
+	@Size(max = 30)
 	private String opcao3;
 
+	@NotNull
+	@Size(max = 30)
 	private String opcao4;
 
+	@NotNull
+	@Size(min = 1, max = 10)
 	private String resposta;
 
 	public Long getId() {
@@ -98,7 +117,7 @@ public class Pergunta {
 	public void setResposta(String resposta) {
 		this.resposta = resposta;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
