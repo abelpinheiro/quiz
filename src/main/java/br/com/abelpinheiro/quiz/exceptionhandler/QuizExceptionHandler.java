@@ -11,8 +11,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -23,6 +25,23 @@ public class QuizExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
 	private MessageSource messageSource;
+
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		String messageUser = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
+		String messageDeveloper = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+
+		List<Erro> erros = Arrays.asList(new Erro(messageUser, messageDeveloper));
+		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		List<Erro> erros = createErrorList(ex.getBindingResult());
+		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
+	}
 
 	@ExceptionHandler(value = { EmptyResultDataAccessException.class })
 	public ResponseEntity<Object> EmptyResultDataAccessException(EmptyResultDataAccessException ex,
@@ -40,27 +59,29 @@ public class QuizExceptionHandler extends ResponseEntityExceptionHandler {
 		List<Erro> erros = new ArrayList<>();
 
 		for (FieldError fieldErro : bindingResult.getFieldErrors()) {
-			System.out.println("AINDA N TA FEITO");
+			String userMessage = messageSource.getMessage(fieldErro, LocaleContextHolder.getLocale());
+			String developerMessage = fieldErro.toString();
+			erros.add(new Erro(userMessage, developerMessage));
 		}
 		return erros;
 	}
 
 	public static class Erro {
 
-		private String messageUser;
-		private String messageDeveloper;
+		private String userMessage;
+		private String developerMessage;
 
-		public Erro(String messageUser, String messageDeveloper) {
-			this.messageUser = messageUser;
-			this.messageDeveloper = messageDeveloper;
+		public Erro(String userMessage, String developerMessage) {
+			this.userMessage = userMessage;
+			this.developerMessage = developerMessage;
 		}
 
-		public String getMessageUser() {
-			return messageUser;
+		public String getUserMessage() {
+			return userMessage;
 		}
 
-		public String getMessageDeveloper() {
-			return messageDeveloper;
+		public String getDeveloperMessage() {
+			return developerMessage;
 		}
 
 	}
