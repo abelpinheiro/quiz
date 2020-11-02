@@ -2,11 +2,13 @@ package br.com.abelpinheiro.quiz;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
+@EnableSpringDataWebSupport
 public class QuizApplication {
 
 	public static void main(String[] args) {
