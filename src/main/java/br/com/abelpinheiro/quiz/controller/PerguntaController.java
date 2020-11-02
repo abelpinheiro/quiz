@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.abelpinheiro.quiz.model.Pergunta;
+import br.com.abelpinheiro.quiz.model.Question;
 import br.com.abelpinheiro.quiz.repository.PerguntaRepository;
 import br.com.abelpinheiro.quiz.service.PerguntaService;
 
@@ -35,14 +35,14 @@ public class PerguntaController {
 	private PerguntaService perguntaService;
 
 	@GetMapping
-	public Page<Pergunta> listarPerguntas(@RequestParam(required = false) String tipoQuiz,
+	public Page<Question> listarPerguntas(@RequestParam(required = false) String quizType,
 			@RequestParam(required = false) String page, @RequestParam(required = false) String size,
 			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable pageable) {
-		return perguntaService.listarPerguntas(tipoQuiz, pageable);
+		return perguntaService.listarPerguntas(quizType, pageable);
 	}
 
 	@PostMapping
-	public ResponseEntity<Pergunta> criarPergunta(@Valid @RequestBody Pergunta pergunta) {
+	public ResponseEntity<Question> criarPergunta(@Valid @RequestBody Question pergunta) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(perguntaService.criarPergunta(pergunta));
 	}
 
@@ -53,8 +53,8 @@ public class PerguntaController {
 	}
 
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Pergunta> atualizarPergunta(@PathVariable Long codigo,
-			@Valid @RequestBody Pergunta pergunta) {
+	public ResponseEntity<Question> atualizarPergunta(@PathVariable Long codigo,
+			@Valid @RequestBody Question pergunta) {
 		return null;
 	}
 }

@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.abelpinheiro.quiz.model.Pergunta;
+import br.com.abelpinheiro.quiz.model.Question;
 import br.com.abelpinheiro.quiz.repository.PerguntaRepository;
 
 @Service
@@ -14,16 +14,16 @@ public class PerguntaService {
 	@Autowired
 	private PerguntaRepository perguntaRepository;
 
-	public Page<Pergunta> listarPerguntas(String tipoQuiz, Pageable pageable) {
+	public Page<Question> listarPerguntas(String tipoQuiz, Pageable pageable) {
 		if (tipoQuiz == null) {
 			return perguntaRepository.findAll(pageable);
 		} else {
-			return perguntaRepository.findByTipoQuiz(tipoQuiz, pageable);
+			return perguntaRepository.findByQuizType(tipoQuiz, pageable);
 		}
 	}
 
-	public Pergunta criarPergunta(Pergunta pergunta) {
-		Pergunta perguntaSalva = perguntaRepository.save(pergunta);
+	public Question criarPergunta(Question pergunta) {
+		Question perguntaSalva = perguntaRepository.save(pergunta);
 		return perguntaSalva;
 	}
 
