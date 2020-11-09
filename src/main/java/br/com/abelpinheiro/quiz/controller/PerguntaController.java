@@ -21,40 +21,36 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.abelpinheiro.quiz.model.Question;
-import br.com.abelpinheiro.quiz.repository.PerguntaRepository;
-import br.com.abelpinheiro.quiz.service.PerguntaService;
+import br.com.abelpinheiro.quiz.service.QuestionService;
 
 @RestController
 @RequestMapping("/perguntas")
 public class PerguntaController {
 
 	@Autowired
-	private PerguntaRepository perguntaRepository;
-
-	@Autowired
-	private PerguntaService perguntaService;
+	private QuestionService questionService;
 
 	@GetMapping
-	public Page<Question> listarPerguntas(@RequestParam(required = false) String quizType,
+	public Page<Question> getQuestions(@RequestParam(required = false) String quizType,
 			@RequestParam(required = false) String page, @RequestParam(required = false) String size,
 			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable pageable) {
-		return perguntaService.listarPerguntas(quizType, pageable);
+		return questionService.listarPerguntas(quizType, pageable);
 	}
 
 	@PostMapping
-	public ResponseEntity<Question> criarPergunta(@Valid @RequestBody Question pergunta) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(perguntaService.criarPergunta(pergunta));
+	public ResponseEntity<Question> createQuestion(@Valid @RequestBody Question question) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(question));
 	}
 
-	@DeleteMapping("/{codigo}")
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void removerPergunta(@PathVariable Long codigo) {
-		perguntaService.removerPergunta(codigo);
+	public void deleteQuestion(@PathVariable Long id) {
+		questionService.deleteQuestion(id);
 	}
 
-	@PutMapping("/{codigo}")
-	public ResponseEntity<Question> atualizarPergunta(@PathVariable Long codigo,
-			@Valid @RequestBody Question pergunta) {
-		return null;
+	@PutMapping("/{id}")
+	public ResponseEntity<Question> updateQuestion(@PathVariable Long id, @Valid @RequestBody Question question) {
+		ResponseEntity<Question> responseQuestion = questionService.updateQuestion(id, question);
+		return responseQuestion;
 	}
 }

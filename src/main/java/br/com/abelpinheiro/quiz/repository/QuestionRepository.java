@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.abelpinheiro.quiz.model.Question;
 
-public interface PerguntaRepository extends JpaRepository<Question, Long> {
+public interface QuestionRepository extends JpaRepository<Question, Long> {
 
 	Page<Question> findByQuizType(String quizType, Pageable pageable);
 }
